@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bank Branches</title>
+</head>
+<body>
+<h1>Bank Branches</h1>
+<select name = "city" id = "city" onchange = "load()">
+<option value=null>--Select City--</option>
+<option value="MUMBAI">Mumbai</option>
+<option value="BANGALORE">Bangalore</option>
+<option value="PUNE">Pune</option>
+<option value="MYSORE">Mysore</option>
+<option value="CHENNAI">Chennai</option>
+</select>
+<input type = "search" id = "find" onkeyup="search()">
+<output name = "display" id = "display"></output>
+</body>
+<script>
+ function load(){
+var req = new XMLHttpRequest()
+var val=document.getElementById("city").value
+var url = "http://vast-shore-74260.herokuapp.com/banks?city="+val
+req.open('GET',url,true)
+req.onload=function() {
+data = JSON.parse(this.response)
+}
+req.send();
+}
+
+function search(){
+	var i,j,txt=""
+	var value = document.getElementById("find").value
+	txt += "<table border='1' width = '800px'>"
+	txt += "<tr><th>" + "IFSC" + "</th><th>" + "Branch ID" + "</th><th>" + "Branch" + "</th><th>" + "Address" + "</th><th>" + "City" + "</th><th>" + "District" + "</th><th>" + "State" + "</th><th>" + "Bank Name" + "</th><th>" + "Add to Favourite" + "</th></tr>";
+	
+	for (i in data)
+	{
+		var ser=["ifsc", "bank_id", "branch", "address", "city","district","state","bank_name"];
+		for(j=0 ; j<8; j++)
+		{
+			if(data[i][ser[j]] == value || data[i][ser[j]] === value)
+			{	
+				txt += "<tr>";
+				for(var x = 0;x<8;x++)
+					{
+						var bid=data[i][ser[x]];
+						txt += "<td>" + data[i][ser[x]] + "</td>";
+					}
+				txt += "<td>"+"<button id = btn value ="+data[i].ifsc+" onclick= myscript(value)>"+"Favourite"+"</button>"+"</td>";
+				txt += "</tr>";
+				break;
+			}
+		}
+	}
+	txt += "</table>"  
+    document.getElementById("display").innerHTML = txt;
+}
+function myscript(a){
+	var b =a
+	console.log(b);
+}
+</script>
+</html>
