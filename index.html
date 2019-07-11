@@ -20,7 +20,7 @@
  function load(){
 var req = new XMLHttpRequest()
 var val=document.getElementById("city").value
-var url = "http://vast-shore-74260.herokuapp.com/banks?city="+val
+var url = "https://vast-shore-74260.herokuapp.com/banks?city="+val
 req.open('GET',url,true)
 req.onload=function() {
 data = JSON.parse(this.response)
